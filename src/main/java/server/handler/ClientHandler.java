@@ -76,9 +76,16 @@ public class ClientHandler {
     public void readMessage() throws IOException {
         while (true) {
             String clientStr = dis.readUTF();
-            System.out.println("from " + this.nick + ": " + clientStr);
-            if (clientStr.equals("/exit")) {
-                return;
+            if (clientStr.startsWith("/")) {
+                if (clientStr.equals("/exit")) {
+                    return;
+                }
+                if (clientStr.startsWith("/w")) {
+                    String[] strArray = clientStr.split("\\s");
+                    String nickName = strArray[1];
+                    String msg = clientStr.substring(4 + nickName.length());
+                }
+                continue;
             }
             server.broadcastMsg(this.nick + ": " + clientStr);
         }
